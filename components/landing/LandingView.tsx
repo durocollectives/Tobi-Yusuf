@@ -87,7 +87,7 @@ export function LandingView() {
               Conversation Host</strong>
             </p>
             <p className="hero-sub hero-anim-3">
-              A luxury editorial space for professional women who want honest,
+              A luxury editorial space for couples who want honest,
               grounded conversation about marriage, identity, and the life you&apos;re
               building, without the noise.
             </p>
