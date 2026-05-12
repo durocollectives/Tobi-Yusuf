@@ -23,8 +23,6 @@ import { LoveResetSubscribeForm } from "./LoveResetSubscribeForm";
 
 const HERO_SLIDES = [
   { src: "/assets/images/6.jpg",        position: "center 35%" },
-  { src: "/assets/images/GSON2579.jpg", position: "center 20%" },
-  { src: "/assets/images/GSON2851.jpg", position: "center 18%" },
   { src: "/assets/images/GSON3081.jpg", position: "center 22%" },
   { src: "/assets/images/GSON3097.jpg", position: "center 18%" },
 ];
