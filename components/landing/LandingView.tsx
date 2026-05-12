@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { PRICES } from "@/lib/data/prices";
@@ -20,11 +21,41 @@ import { SiteFooter } from "./SiteFooter";
 import { FeaturedPublications } from "./FeaturedPublications";
 import { LoveResetSubscribeForm } from "./LoveResetSubscribeForm";
 
+const HERO_SLIDES = [
+  "/assets/images/6.jpg",
+  "/assets/images/GSON2579.jpg",
+  "/assets/images/GSON2851.jpg",
+  "/assets/images/GSON3081.jpg",
+  "/assets/images/GSON3097.jpg",
+];
+
 const FAMILIAR_SLIDES = [
   { primary: "/assets/images/GSON2579.jpg", fallback: "/assets/images/1.jpg" },
   { primary: "/assets/images/GSON2657.jpg", fallback: "/assets/images/2.jpg" },
   { primary: "/assets/images/GSON2671.jpg", fallback: "/assets/images/3.jpg" },
 ];
+
+function useCountUp(target: number, duration: number, active: boolean, reduced: boolean) {
+  const [count, setCount] = useState(reduced ? target : 0);
+  useEffect(() => {
+    if (!active || reduced) {
+      setCount(target);
+      return;
+    }
+    setCount(0);
+    const start = performance.now();
+    let raf: number;
+    const frame = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(ease * target));
+      if (progress < 1) raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(raf);
+  }, [active, target, duration, reduced]);
+  return count;
+}
 
 export function LandingView() {
   useAnimateIn();
@@ -33,6 +64,15 @@ export function LandingView() {
   const [comingSoonOffer, setComingSoonOffer] = useState("");
   const [activeFamiliarSlide, setActiveFamiliarSlide] = useState(0);
   const [failedFamiliarSlides, setFailedFamiliarSlides] = useState<number[]>([]);
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
+  const [proofVisible, setProofVisible] = useState(false);
+  const proofRef = useRef<HTMLElement>(null);
+
+  const prefersReducedMotion = useReducedMotion() ?? false;
+
+  const count2M = useCountUp(2, 1600, proofVisible, prefersReducedMotion);
+  const count10places = useCountUp(10, 1400, proofVisible, prefersReducedMotion);
+  const count10years = useCountUp(10, 1400, proofVisible, prefersReducedMotion);
 
   function isComingSoonOffer() {
     return false;
@@ -59,20 +99,52 @@ export function LandingView() {
     return () => clearInterval(id);
   }, []);
 
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const id = setInterval(() => {
+      setActiveHeroSlide((current) => (current + 1) % HERO_SLIDES.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    const el = proofRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setProofVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <SiteNav />
       <main>
         <section className="hero" aria-label="Introduction">
+          {/* Carousel slides — crossfade */}
           <div className="hero-photo" aria-hidden>
-            <Image
-              src={SITE_IMAGES.img6}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="hero-photo-img"
-            />
+            {HERO_SLIDES.map((src, i) => (
+              <div
+                key={src}
+                className={`hero-carousel-slide${i === activeHeroSlide ? " is-active" : ""}`}
+              >
+                <Image
+                  src={src}
+                  alt="Tobi Yusuf, marriage counselling alternative and reflection guide based in London"
+                  fill
+                  priority={i === 0}
+                  sizes="100vw"
+                  className="hero-photo-img"
+                />
+              </div>
+            ))}
           </div>
 
           <div className="hero-content">
@@ -83,13 +155,10 @@ export function LandingView() {
               Real conversations for real <em>marriages.</em>
             </h1>
             <p className="hero-positioning hero-anim-2b">
-              <strong>Relational &amp; Cultural Intelligence Advisor | Speaker | Facilitator |
-              Conversation Host</strong>
+              <strong>Relational &amp; Cultural Intelligence Advisor | Speaker | Facilitator | Conversation Host</strong>
             </p>
             <p className="hero-sub hero-anim-3">
-              A luxury editorial space for couples who want honest,
-              grounded conversation about marriage, identity, and the life you&apos;re
-              building, without the noise.
+              A luxury editorial space for couples seeking marriage counselling alternatives, premarital support, or a faith-led marriage mentor: honest, grounded conversation about marriage, identity, and the life you&apos;re building.
             </p>
             <div className="hero-ctas hero-anim-3">
               <a href="#experiences" className="btn btn-terracotta">
@@ -121,100 +190,75 @@ export function LandingView() {
           </p>
         </div>
 
-        <section className="proof-strip" aria-label="Impact">
-          <div className="proof-grid">
-            {[
-              { n: "2M+", l: "Instagram views on marriage content" },
-              { n: "10", l: "Intimate places per Intentional Space" },
-              { n: "10+", l: "Years of real marriage conversations" },
-              { n: "1", l: "Guiding principle: truth" },
-            ].map((item) => (
-              <div key={item.l} className="animate-in proof-item">
-                <span className="proof-num">{item.n}</span>
-                <span className="proof-label">{item.l}</span>
-              </div>
-            ))}
+        <section className="proof-strip" aria-label="Impact" ref={proofRef}>
+          <div className="proof-hero-stat">
+            <span className="proof-hero-num">{count2M}M+</span>
+            <p className="proof-hero-caption">People already in this conversation.</p>
+          </div>
+          <div className="proof-sub-row">
+            <span>{count10places} intimate places per experience</span>
+            <span aria-hidden>·</span>
+            <span>{count10years}+ years of real conversations</span>
+            <span aria-hidden>·</span>
+            <span>One guiding principle: truth</span>
           </div>
         </section>
 
         <FeaturedPublications />
 
+        <div className="section-divider" aria-hidden />
+
         <section className="familiar-section" aria-labelledby="familiar-heading">
-          <div className="familiar-shell section--narrow">
-            <div className="familiar-layout">
-              <div className="familiar-content-col">
-                <header className="familiar-header animate-in">
-                  <p className="section-label familiar-kicker" id="familiar-heading">
-                    If this feels familiar
-                  </p>
-                  <div className="terracotta-rule familiar-rule" />
-                </header>
-                <div className="familiar-scenarios animate-in">
-                  <p className="familiar-line">
-                    You love your spouse, but conversations often turn into misunderstandings.
-                  </p>
-                  <p className="familiar-line">
-                    You find yourself repeating the same concerns, yet nothing seems to change.
-                  </p>
-                  <p className="familiar-line">
-                    Sometimes you wonder if you are asking for too much, or if you have simply
-                    stopped saying certain things altogether.
-                  </p>
-                  <p className="familiar-line">
-                    You may still care deeply about your marriage, but the emotional connection
-                    feels different from how it once was.
-                  </p>
-                </div>
-                <p className="familiar-emphasis animate-in">
-                  If any of this feels familiar, you are not alone.
-                </p>
-                <div className="familiar-outro animate-in">
-                  <p className="familiar-outro-text">
-                    My work creates space to understand the patterns behind these moments, and
-                    to begin more intentional conversations about them.
-                  </p>
-                  <p className="familiar-outro-text">
-                    You can begin by exploring reflections, joining a conversation, or
-                    attending one of the experiences designed to create space for honest
-                    dialogue.
-                  </p>
-                </div>
-                <div className="familiar-cta-row animate-in">
-                  <Link href="/reflections" className="btn btn-secondary">
-                    Read Reflections
-                  </Link>
-                  <a href="#experiences" className="btn btn-secondary">
-                    Explore Experiences
-                  </a>
-                  <Link href="/speaking" className="btn btn-secondary">
-                    Book Tobi to Speak
-                  </Link>
-                </div>
+          {/* Bleed image — right 40%, absolute, fades left */}
+          <div className="familiar-image-bleed" aria-hidden>
+            {FAMILIAR_SLIDES.map((slide, index) => (
+              <div
+                key={slide.primary}
+                className={`familiar-slide ${index === activeFamiliarSlide ? "is-active" : ""}`}
+                aria-hidden
+              >
+                <Image
+                  src={failedFamiliarSlides.includes(index) ? slide.fallback : slide.primary}
+                  alt=""
+                  fill
+                  sizes="40vw"
+                  className="familiar-slide-image"
+                  onError={() => {
+                    setFailedFamiliarSlides((current) =>
+                      current.includes(index) ? current : [...current, index],
+                    );
+                  }}
+                />
               </div>
-              <div className="familiar-media-col animate-in" aria-label="Conversation highlights">
-                <div className="familiar-slider-frame">
-                  {FAMILIAR_SLIDES.map((slide, index) => (
-                    <div
-                      key={slide.primary}
-                      className={`familiar-slide ${index === activeFamiliarSlide ? "is-active" : ""}`}
-                      aria-hidden={index !== activeFamiliarSlide}
-                    >
-                      <Image
-                        src={failedFamiliarSlides.includes(index) ? slide.fallback : slide.primary}
-                        alt=""
-                        fill
-                        sizes="(max-width: 960px) 100vw, 42vw"
-                        className="familiar-slide-image"
-                        onError={() => {
-                          setFailedFamiliarSlides((current) =>
-                            current.includes(index) ? current : [...current, index],
-                          );
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
+            ))}
+          </div>
+
+          <div className="familiar-text-body section--narrow">
+            <p className="familiar-kicker-new" id="familiar-heading">If this feels familiar</p>
+
+            <div className="familiar-prose animate-in">
+              <p>You love your spouse, but conversations often turn into misunderstandings.</p>
+              <p>You find yourself repeating the same concerns, yet nothing seems to change.</p>
+              <p>Sometimes you wonder if you are asking for too much, or if you have simply stopped saying certain things altogether.</p>
+              <p>You may still care deeply, but the emotional connection feels different from how it once was.</p>
+            </div>
+
+            <p className="familiar-anchor reveal-whisper">
+              If any of this feels familiar, you are not alone.
+            </p>
+
+            <div className="familiar-response animate-in">
+              <p>My work creates space to understand the patterns behind these moments.</p>
+              <p>Whether you&apos;ve been Googling marriage counselling, couples therapy, or how to save your marriage, you&apos;re in the right place.</p>
+            </div>
+
+            <div className="familiar-cta-row animate-in">
+              <Link href="/reflections" className="btn btn-secondary">
+                Read Reflections
+              </Link>
+              <a href="#experiences" className="btn btn-secondary">
+                Explore Experiences
+              </a>
             </div>
           </div>
         </section>
@@ -222,30 +266,31 @@ export function LandingView() {
         <section id="about" className="section about-section">
           <div className="about-grid">
             <div className="about-quote-col animate-in">
-              <p className="section-label">About Tobi</p>
-              <div className="terracotta-rule" />
-
-              {/* SITE_IMAGES.img4 — used twice: About on home and booking aside (booking page) */}
-              <div className="about-portrait about-portrait-frame">
-                <SiteImage
-                  src={SITE_IMAGES.img4}
-                  alt="Tobi Yusuf"
-                  ratio="4/3"
-                  sizes="(max-width: 900px) 100vw, min(520px, 50vw)"
-                  className="image-dim"
-                />
+              {/* Portrait with spine label */}
+              <div className="about-portrait-wrapper">
+                <span className="about-portrait-spine" aria-hidden>Tobi Yusuf</span>
+                {/* SITE_IMAGES.img4 — used twice: About on home and booking aside */}
+                <div className="about-portrait about-portrait-frame reveal-scale">
+                  <SiteImage
+                    src={SITE_IMAGES.img4}
+                    alt="Tobi Yusuf, faith-led marriage mentor and relationship guide"
+                    ratio="4/3"
+                    sizes="(max-width: 900px) 100vw, min(520px, 50vw)"
+                    className="image-dim"
+                  />
+                </div>
               </div>
 
-              <blockquote className="about-quote">
-                From the bedroom to the boardroom. I help people build the life that holds everything
-                else together.
-              </blockquote>
               <p className="about-faith">
                 My work is grounded in faith. God is the foundation of everything I build.
               </p>
             </div>
 
-            <div className="animate-in about-body">
+            <div className="reveal-drift about-body">
+              <blockquote className="about-quote">
+                From the bedroom to the boardroom. I help people build the life that holds everything
+                else together.
+              </blockquote>
               <p className="body-text">
                 I&apos;m Tobi Yusuf, wife of 14 years, mother of three daughters,
                 speaker, and the woman your DMs already know. I talk about marriage
@@ -254,6 +299,9 @@ export function LandingView() {
                 haven&apos;t said. I don&apos;t give advice. I create rooms: intimate, safe,
                 honest rooms where couples and women can finally say the thing
                 they&apos;ve been carrying.
+              </p>
+              <p className="body-text">
+                My work is a faith-led alternative to traditional marriage counselling, for couples and women who want lived-experience guidance, not clinical advice.
               </p>
               <p className="body-text">
                 I&apos;m also the founder of RIAH, luxury wedding planning for culturally
@@ -267,75 +315,64 @@ export function LandingView() {
                 let&apos;s go from there.
               </p>
               <a href="#offers" className="btn btn-secondary" style={{ marginTop: "1.5rem" }}>
-                explore what I’m building
+                explore what I&apos;m building
               </a>
             </div>
           </div>
         </section>
 
-        <section className="section work-pillars-section" aria-labelledby="work-pillars-heading">
-          <div className="section--narrow" style={{ marginBottom: "2.5rem" }}>
-            <p className="section-label">The Work</p>
-            <div className="terracotta-rule" />
-            <h2 id="work-pillars-heading" className="display-md" style={{ color: "var(--anchor)" }}>
-              The Work
-            </h2>
-          </div>
-          <div className="work-pillars-grid section--narrow">
-            <article className="work-pillar-card animate-in">
-              <h3 className="work-pillar-title">Relational Intelligence</h3>
-              <p className="body-text work-pillar-body">
-                Helping individuals and couples recognise the communication patterns
-                shaping their relationships.
-              </p>
-              <p className="work-pillar-subnote">
-                Marriage advocacy · Couples work · Intentional Space · Reflections ·
-                Podcast
-              </p>
-            </article>
-            <article className="work-pillar-card animate-in">
-              <h3 className="work-pillar-title">Cultural Intelligence</h3>
-              <p className="body-text work-pillar-body">
-                Supporting organisations in navigating cultural nuance and building
-                stronger communication across diverse teams.
-              </p>
-              <p className="work-pillar-subnote">
-                Delivered through{" "}
-                <a
-                  href="https://www.instagram.com/luxurymeetscultureofficial"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: "inherit", textDecoration: "underline" }}
-                >
-                  Luxury Meets Culture
-                </a>
-                , cultural intelligence training for organisations that want to move
-                beyond diversity statements.
-              </p>
-            </article>
-            <article className="work-pillar-card animate-in">
-              <h3 className="work-pillar-title">Intentional Experiences</h3>
-              <p className="body-text work-pillar-body">
-                Curated gatherings designed to create space for honest conversations,
-                reflection, and connection.
-              </p>
-              <p className="work-pillar-subnote">
-                Intentional Space · Forever Table · Forever &amp; A Day · Curated
-                Collaborations
-              </p>
-              <a href="#experiences" className="work-pillar-link">
-                Explore experiences
-              </a>
-            </article>
+        <div className="section-divider" aria-hidden />
+
+        <section className="work-pillars-section" aria-labelledby="work-pillars-heading">
+          <div className="work-pillars-inner section--narrow">
+            {[
+              {
+                title: "Relational Intelligence",
+                body: "A marriage counselling alternative for individuals and couples, helping you recognise the patterns shaping your relationship, without the clinical environment of traditional therapy.",
+                note: "Marriage advocacy · Couples work · Intentional Space · Reflections",
+              },
+              {
+                title: "Cultural Intelligence",
+                body: "Supporting organisations in navigating cultural nuance and building stronger communication across diverse teams.",
+                note: null,
+                extra: { href: "https://www.instagram.com/luxurymeetscultureofficial", text: "Luxury Meets Culture" },
+              },
+              {
+                title: "Intentional Experiences",
+                body: "Curated gatherings designed to create space for honest conversations, reflection, and connection.",
+                note: "Intentional Space · Forever Table · Forever & A Day",
+              },
+            ].map((pillar) => (
+              <article key={pillar.title} className="work-pillar-row animate-in">
+                <h3 className="work-pillar-row-title" id={pillar.title === "Relational Intelligence" ? "work-pillars-heading" : undefined}>
+                  {pillar.title}
+                </h3>
+                <div className="work-pillar-row-body">
+                  <p>{pillar.body}</p>
+                  {pillar.note && <p className="work-pillar-subnote">{pillar.note}</p>}
+                  {"extra" in pillar && pillar.extra ? (
+                    <p className="work-pillar-subnote">
+                      Delivered through{" "}
+                      <a
+                        href={pillar.extra.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "inherit", textDecoration: "underline" }}
+                      >
+                        {pillar.extra.text}
+                      </a>
+                    </p>
+                  ) : null}
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
         <section id="experiences" className="section experiences-section">
-          <div className="section--narrow" style={{ marginBottom: "2.5rem" }}>
-            <p className="section-label">Experiences</p>
-            <div className="terracotta-rule" />
-            <h2 className="display-md">Experiences</h2>
-          </div>
+          <p className="experiences-editorial-intro reveal-whisper">
+            The most intimate room I create.
+          </p>
 
           <div className="event-featured animate-in" id="intentional-space">
             <div className="event-featured-inner event-featured-inner-flex" style={{ maxWidth: "100%" }}>
@@ -387,73 +424,64 @@ export function LandingView() {
           </div>
         </section>
 
-        <section id="offers" className="section offers-section">
-          <div className="section--narrow" style={{ marginBottom: "2.5rem" }}>
-            <p className="section-label">There’s a Room for You</p>
-            <div className="terracotta-rule" />
-            <h2 className="display-md" style={{ color: "var(--anchor)" }}>
-              There’s a Room for You
-            </h2>
-          </div>
-
-          <div className="offers-grid section--narrow">
+        <section id="offers" className="offers-section">
+          <p className="offers-editorial-intro reveal-whisper">
+            There is a room for exactly where you are.
+          </p>
+          <div className="offers-list section--narrow">
             {[
               {
-                num: "01",
                 title: "Marriage Reflection Call",
-                desc: "One honest conversation that helps you see what's underneath the argument.",
+                desc: "A counselling alternative for couples. One honest conversation that helps you see what's underneath the argument.",
                 price: PRICES.reflectionCall,
                 url: SCHEDULING_URL,
-                ctaLabel: "Start the Conversation",
+                ctaLabel: "Begin →",
               },
               {
-                num: "02",
                 title: "Forever & A Day",
-                desc: "Marriage preparation mentorship for couples who want to start right and stay right.",
-                price: `From ${PRICES.foreverInADay.group} (group) | ${PRICES.foreverInADay.private} (private)`,
+                desc: "The premarital counselling alternative for engaged and newlywed couples. Faith-led marriage preparation mentorship — group and 1:1 formats.",
+                price: `From ${PRICES.foreverInADay.group} (group) / ${PRICES.foreverInADay.private} (private)`,
                 url: FOREVER_AND_A_DAY_TALLY_URL,
+                ctaLabel: "Begin →",
               },
               {
-                num: "03",
                 title: "Forever Table",
                 desc: "The dinner where marriages get real and grow stronger for it.",
                 price: PRICES.foreverTable,
                 url: FOREVER_TABLE_TALLY_URL,
+                ctaLabel: "Begin →",
               },
               {
-                num: "04",
                 title: "Òye Community",
-                desc: "A monthly community for couples and individuals who are choosing to stay, choosing to grow, and choosing honesty over silence.",
-                price: `${PRICES.circle.monthly} | ${PRICES.circle.annual}`,
+                desc: "A faith-led marriage community for couples and individuals choosing to stay, grow, and replace silence with honesty. Online marriage support that doesn't feel clinical.",
+                price: `${PRICES.circle.monthly} / ${PRICES.circle.annual}`,
                 url: "https://tally.so/r/LZM1Bl",
+                ctaLabel: "Begin →",
               },
             ].map((o) => (
-              <article key={o.num} className="offer-card animate-in">
-                <div className="offer-card-body">
-                  <div className="offer-num">{o.num}</div>
-                  <h3 className="offer-title">{o.title}</h3>
-                  <p className="offer-desc">{o.desc}</p>
-                  <p className="offer-price">{o.price}</p>
+              <article key={o.title} className="offer-row animate-in">
+                <div className="offer-row-main">
+                  <h3 className="offer-row-title">{o.title}</h3>
+                  <p className="offer-row-desc">{o.desc}</p>
                 </div>
-                <div className="offer-card-footer">
+                <div className="offer-row-aside">
+                  <p className="offer-row-price">{o.price}</p>
                   {isComingSoonOffer() ? (
                     <button
                       type="button"
-                      className="btn btn-secondary btn--sm offer-waitlist-cta"
+                      className="offer-row-cta"
                       onClick={() => openComingSoon(o.title)}
                     >
-                      Join the waitlist
-                      <OfferWaitlistPointerIcon />
+                      {o.ctaLabel}
                     </button>
                   ) : (
                     <a
                       href={o.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn btn-secondary btn--sm offer-waitlist-cta"
+                      className="offer-row-cta"
                     >
-                      {"ctaLabel" in o && o.ctaLabel ? o.ctaLabel : "Join the waitlist"}
-                      <OfferWaitlistPointerIcon />
+                      {o.ctaLabel}
                     </a>
                   )}
                 </div>
@@ -462,116 +490,53 @@ export function LandingView() {
           </div>
         </section>
 
-        <section
-          className="section pathways-section"
-          aria-labelledby="pathways-heading"
-        >
-          <div className="section--narrow" style={{ marginBottom: "2.5rem" }}>
-            <p className="section-label">Where Would You Like to Begin?</p>
-            <div className="terracotta-rule" />
-            <h2 id="pathways-heading" className="display-md" style={{ color: "var(--anchor)" }}>
-              Where Would You Like to Begin?
-            </h2>
-          </div>
-          <p
-            className="body-text section--narrow"
-            style={{ marginBottom: "2rem", maxWidth: "42rem" }}
-          >
-            Many people arrive here at different stages of their journey. Some are simply
-            curious; others are looking for deeper conversations about their
-            relationships. If you are not sure where to begin, here are a few ways to
-            explore.
-          </p>
-          <div className="offers-grid section--narrow">
-            <article className="offer-card animate-in">
-              <div className="offer-card-body">
-                <h3 className="offer-title">Start with a Reflection</h3>
-                <p className="offer-desc">
-                  Read weekly reflections exploring the real patterns couples experience in
-                  marriage, the moments many people recognise but rarely talk about openly.
-                </p>
-              </div>
-              <div className="offer-card-footer">
-                <Link href="/reflections" className="btn btn-secondary btn--sm">
-                  Read Reflections
-                </Link>
-              </div>
-            </article>
-            <article className="offer-card animate-in">
-              <div className="offer-card-body">
-                <h3 className="offer-title">Join an Experience</h3>
-                <p className="offer-desc">
-                  Attend one of the intentional gatherings designed to create space for
-                  honest conversations about relationships and emotional patterns.
-                  Includes Intentional Space, Forever &amp; A Day, and Forever Table.
-                </p>
-              </div>
-              <div className="offer-card-footer">
-                <a href="#experiences" className="btn btn-secondary btn--sm">
-                  Explore Experiences
-                </a>
-              </div>
-            </article>
-            <article className="offer-card animate-in">
-              <div className="offer-card-body">
-                <h3 className="offer-title">Invite Tobi to Speak</h3>
-                <p className="offer-desc">
-                  For organisations, conferences, and communities looking to explore
-                  relational intelligence, cultural understanding, and communication
-                  patterns.
-                </p>
-              </div>
-              <div className="offer-card-footer">
-                <Link href="/speaking" className="btn btn-secondary btn--sm">
-                  Book Tobi to Speak
-                </Link>
-              </div>
-            </article>
+        <div className="section-divider" aria-hidden />
+
+        <section className="pathways-section" aria-labelledby="pathways-heading">
+          <div className="pathways-inner section--narrow">
+            <p id="pathways-heading" className="pathways-headline reveal-whisper">
+              Begin wherever you are.
+            </p>
+            <div className="pathways-links pathways-links--buttons">
+              <Link href="/reflections" className="btn btn-secondary">Read Reflections</Link>
+              <a href="#experiences" className="btn btn-secondary">Join an Experience</a>
+              <Link href="/speaking" className="btn btn-secondary">Invite Tobi to Speak</Link>
+            </div>
           </div>
         </section>
 
-        <section className="section testimonials-section">
-          <div className="section--narrow">
-            <div className="animate-in" style={{ marginBottom: "2rem" }}>
-              <p className="section-label">Testimonials</p>
-              <div className="terracotta-rule" />
-              <h2 className="display-md" style={{ color: "var(--anchor)" }}>
-                Words from the room
-              </h2>
-            </div>
+        <div className="section-divider" aria-hidden />
 
-            <div className="testimonial-grid">
-                {[
-                  {
-                    q: "One of the most valuable rooms I've been in for a long time. Healing began for so many of us.",
-                    a: "Valerie",
-                  },
-                  {
-                    q: "Don't give up on the assignment. The women came to heal and healing has begun.",
-                    a: "Tosin",
-                  },
-                  {
-                    q: "You are a powerful communicator. You deliver your message with clarity, conviction and heart.",
-                    a: "Alley",
-                  },
-                ].map((t) => (
-                  <blockquote key={t.a} className="animate-in testimonial">
-                    <p className="testimonial-quote">{t.q}</p>
-                    <footer className="testimonial-author">{t.a}</footer>
-                  </blockquote>
-                ))}
-              </div>
+        <section className="testimonials-section">
+          <div className="section--narrow">
+            <blockquote className="testimonial-featured">
+              <p className="testimonial-featured-quote reveal-whisper">
+                One of the most valuable rooms I&apos;ve been in for a long time. Healing began for so many of us.
+              </p>
+              <footer className="testimonial-featured-author animate-in">Valerie</footer>
+            </blockquote>
+
+            <blockquote className="testimonial testimonial--indent-1 animate-in">
+              <p>Don&apos;t give up on the assignment. The women came to heal and healing has begun.</p>
+              <footer>Tosin</footer>
+            </blockquote>
+
+            <blockquote className="testimonial testimonial--indent-2 animate-in">
+              <p>You are a powerful communicator. You deliver your message with clarity, conviction and heart.</p>
+              <footer>Alley</footer>
+            </blockquote>
           </div>
         </section>
 
         <LoveResetSection />
 
         <section id="audio" className="audio-section">
-          <div className="audio-split audio-split--single">
+          <div className="section--narrow">
             <div className="audio-placeholder animate-in">
-              <span className="audio-phase">Coming May 2026</span>
+              <p className="section-label">Coming May 2026</p>
+              <div className="terracotta-rule terracotta-rule--center reveal-line" />
               <h2 className="audio-title">Inside The Mind Series</h2>
-              <p className="body-text" style={{ maxWidth: "520px", margin: "0 auto 1.5rem" }}>
+              <p className="body-text" style={{ maxWidth: "480px", margin: "1.5rem auto 2rem" }}>
                 A new audio series for couples and individuals who want thoughtful, grounded perspective, without the noise. Details, pricing, and purchase links will land here when the series launches.
               </p>
               <a href="https://tally.so/r/44N4Y5" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">
@@ -581,30 +546,16 @@ export function LandingView() {
           </div>
         </section>
 
-        <section id="contact" className="section form-section contact-section" style={{ paddingTop: 0 }}>
-          <div className="contact-split section--narrow">
-            <div className="contact-split-copy animate-in">
-              <p className="section-label">Contact</p>
-              <div className="terracotta-rule" />
-              <h2 className="display-md contact-split-heading" style={{ color: "var(--anchor)" }}>
-                Get in touch
+        <section id="contact" className="section form-section contact-section contact-section--solo" style={{ paddingTop: 0 }}>
+          <div className="section--narrow" style={{ maxWidth: "42rem" }}>
+            <div className="animate-in">
+              <h2 className="display-md contact-solo-heading" style={{ color: "var(--anchor)", fontStyle: "italic", fontWeight: 300 }}>
+                Say something.
               </h2>
-              <p className="body-text contact-split-lead">
-                Whether it&apos;s a question, an idea, or the beginning of something—I&apos;d love to hear
-                from you.
+              <p className="body-text contact-solo-lead">
+                Whether it&apos;s a question, an idea, or the beginning of something—I&apos;d love to hear from you.
               </p>
               <ContactForm />
-            </div>
-            <div className="contact-split-visual animate-in" aria-hidden>
-              <div className="contact-split-photo">
-                <Image
-                  src="/assets/images/GSON2710.jpg"
-                  alt=""
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 45vw, 520px"
-                  className="contact-split-photo-img"
-                />
-              </div>
             </div>
           </div>
         </section>
@@ -653,30 +604,15 @@ export function LandingView() {
   );
 }
 
-function OfferWaitlistPointerIcon() {
-  return (
-    <svg
-      className="offer-waitlist-pointer"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      aria-hidden
-      fill="currentColor"
-    >
-      <path d="M4 4l10.2 6.56L9.8 12 20 18.56 4 20l3.2-7.2L4 4z" />
-    </svg>
-  );
-}
-
 function LoveResetSection() {
   return (
     <section className="capture-section" aria-labelledby="capture-heading">
       <div className="capture-inner animate-in">
-        <p className="section-label">Free Resource</p>
-        <div className="terracotta-rule terracotta-rule--center" />
-        <h2 id="capture-heading" className="display-md" style={{ color: "var(--text-on-dark)" }}>
-          Let this be your first step.
-        </h2>
+        <p className="capture-heading-1" id="capture-heading" aria-hidden>Let this be</p>
+        <p className="capture-heading-2">your first step.</p>
+        <p className="capture-body">
+          Free marriage support audio for couples feeling stuck. A 5-day reset for stronger connection: a counselling alternative, no clinical environment required.
+        </p>
         <p className="capture-body">
           The Love Reset Audio is a gentle 5 day audio experience. No cost, no fluff. It is designed to help you breathe, refocus, and return to yourself (and your marriage) with a little more clarity.
         </p>
@@ -770,4 +706,3 @@ function ContactForm() {
     </form>
   );
 }
-

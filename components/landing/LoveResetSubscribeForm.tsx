@@ -94,7 +94,7 @@ export function LoveResetSubscribeForm({ variant, idPrefix, onSuccess, className
       </div>
       <button
         type="submit"
-        className={variant === "slide" ? "btn btn-secondary love-reset-slide-submit" : "btn btn-secondary"}
+        className="btn btn-primary"
         disabled={status === "loading"}
       >
         {status === "loading" ? "Sending…" : "Send Me the Audio"}

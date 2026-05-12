@@ -7,7 +7,11 @@ import { FooterSocialIcons } from "@/components/landing/FooterSocialIcons";
 
 export function SiteFooter() {
   return (
-    <footer className="site-footer" id="footer">
+    <div className="footer-architecture" id="footer">
+    <footer className="site-footer">
+      <div className="footer-wordmark" aria-hidden>
+        <span className="footer-wordmark-text">Tobi Yusuf</span>
+      </div>
       <div className="footer-top">
         <div>
           <Link href="/" className="footer-brand-logo">
@@ -71,6 +75,9 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="footer-bottom">
+        <p className="footer-disclaimer">
+          Tobi Yusuf is a marriage reflection guide and space creator with 14 years of lived marriage experience. She is not a licensed therapist, counsellor, or coach. The work offered here is not a substitute for professional mental health care or qualified couples therapy.
+        </p>
         <p className="footer-copy">&copy; {new Date().getFullYear()} Tobi Yusuf. All rights reserved.</p>
         <p className="footer-faith">
           &ldquo;Commit your work to the Lord, and your plans will be established.&rdquo;{" "}
@@ -78,5 +85,6 @@ export function SiteFooter() {
         </p>
       </div>
     </footer>
+    </div>
   );
 }

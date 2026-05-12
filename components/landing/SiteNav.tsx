@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -30,20 +31,54 @@ export function SiteNav() {
   const pathname = usePathname();
   const [navOpen, setNavOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  /** Light heroes: solid bar + dark text from first paint (see #mainNav.nav-on-light). */
+  const [mounted, setMounted] = useState(false);
+
   const path = (pathname ?? "").replace(/\/$/, "") || "/";
   const solidNav =
     path === "/reflections" || path.startsWith("/book") || path.startsWith("/speaking");
   const prefix = pathname === "/" ? "" : "/";
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 60);
+    };
     onScroll();
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useBodyScrollLock(navOpen);
+
+  const menuOverlay = (
+    <div className="nav-mobile-overlay" aria-modal="true" role="dialog" aria-label="Navigation menu">
+      <button
+        type="button"
+        className="nav-toggle is-open nav-mobile-close"
+        aria-label="Close menu"
+        onClick={() => setNavOpen(false)}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
+      <ul className="nav-links open" id="navLinks" role="menu">
+        {LINKS.map(([label, href]) => {
+          const fullHref = href.startsWith("/") ? href : `${prefix}${href}`;
+          return (
+            <li key={label} role="none">
+              <a href={fullHref} onClick={() => setNavOpen(false)} role="menuitem">
+                {label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 
   return (
     <nav
@@ -80,19 +115,22 @@ export function SiteNav() {
           <span />
           <span />
         </button>
-        <ul className={`nav-links${navOpen ? " open" : ""}`} id="navLinks">
-          {LINKS.map(([label, href]) => {
-            const fullHref = href.startsWith("/") ? href : `${prefix}${href}`;
-            return (
-              <li key={label}>
-                <a href={fullHref} onClick={() => setNavOpen(false)}>
-                  {label}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
       </div>
+
+      {/* Desktop nav links stay in normal flow */}
+      <ul className="nav-links" id="navLinksDesktop" aria-hidden>
+        {LINKS.map(([label, href]) => {
+          const fullHref = href.startsWith("/") ? href : `${prefix}${href}`;
+          return (
+            <li key={label}>
+              <a href={fullHref}>{label}</a>
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* Mobile overlay portalled to body so it escapes all stacking contexts */}
+      {mounted && navOpen && createPortal(menuOverlay, document.body)}
     </nav>
   );
 }

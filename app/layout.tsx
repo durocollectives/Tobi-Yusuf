@@ -28,7 +28,7 @@ const playfair = Playfair_Display({
 });
 
 const SITE_DESCRIPTION =
-  "Real conversations for real marriages. Marriage and relationships mentor, speaker, and experience curator based in London.";
+  "A counselling alternative for couples seeking honest marriage conversation. Faith-led marriage mentor, speaker, and reflection guide based in London. Real marriages. Real conversations.";
 
 const SITE_TITLE_DEFAULT = "Tobi Yusuf · Marriage, Relationships & Identity";
 
