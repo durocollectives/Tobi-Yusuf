@@ -22,11 +22,11 @@ import { FeaturedPublications } from "./FeaturedPublications";
 import { LoveResetSubscribeForm } from "./LoveResetSubscribeForm";
 
 const HERO_SLIDES = [
-  "/assets/images/6.jpg",
-  "/assets/images/GSON2579.jpg",
-  "/assets/images/GSON2851.jpg",
-  "/assets/images/GSON3081.jpg",
-  "/assets/images/GSON3097.jpg",
+  { src: "/assets/images/6.jpg",        position: "center 35%" },
+  { src: "/assets/images/GSON2579.jpg", position: "center 20%" },
+  { src: "/assets/images/GSON2851.jpg", position: "center 18%" },
+  { src: "/assets/images/GSON3081.jpg", position: "center 22%" },
+  { src: "/assets/images/GSON3097.jpg", position: "center 18%" },
 ];
 
 const FAMILIAR_SLIDES = [
@@ -130,18 +130,19 @@ export function LandingView() {
         <section className="hero" aria-label="Introduction">
           {/* Carousel slides — crossfade */}
           <div className="hero-photo" aria-hidden>
-            {HERO_SLIDES.map((src, i) => (
+            {HERO_SLIDES.map((slide, i) => (
               <div
-                key={src}
+                key={slide.src}
                 className={`hero-carousel-slide${i === activeHeroSlide ? " is-active" : ""}`}
               >
                 <Image
-                  src={src}
+                  src={slide.src}
                   alt="Tobi Yusuf, marriage counselling alternative and reflection guide based in London"
                   fill
                   priority={i === 0}
                   sizes="100vw"
                   className="hero-photo-img"
+                  style={{ objectPosition: slide.position }}
                 />
               </div>
             ))}
