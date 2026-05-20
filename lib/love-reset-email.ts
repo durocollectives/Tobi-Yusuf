@@ -49,7 +49,7 @@ export function buildLoveResetEmailContent(args: {
     ``,
     `Let this be your first step.`,
     ``,
-    `The Love Reset Audio is a gentle 5-day audio experience. No cost, no fluff. It is designed to help you breathe, refocus, and return to yourself (and your marriage) with a little more clarity.`,
+    `The Quiet Return is a gentle 5-day audio experience. No cost, no fluff. It is designed to help you breathe, refocus, and return to yourself (and your marriage) with a little more clarity.`,
     ``,
     `Access your audio here:`,
     audioUrl,
@@ -74,7 +74,7 @@ export function buildLoveResetEmailContent(args: {
           <td style="padding:36px 32px 40px;">
             <p style="margin:0 0 20px;">Hi ${safeName},</p>
             <p style="margin:0 0 16px;font-weight:600;">Let this be your first step.</p>
-            <p style="margin:0 0 28px;color:#5c3d47;">The Love Reset Audio is a gentle 5-day audio experience. No cost, no fluff. It is designed to help you breathe, refocus, and return to yourself (and your marriage) with a little more clarity.</p>
+            <p style="margin:0 0 28px;color:#5c3d47;">The Quiet Return is a gentle 5-day audio experience. No cost, no fluff. It is designed to help you breathe, refocus, and return to yourself (and your marriage) with a little more clarity.</p>
             <p style="margin:0 0 32px;">
               <a href="${safeUrlAttr}" style="display:inline-block;padding:14px 28px;background:#3d1f2b;color:#faf8f6;text-decoration:none;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;font-family:system-ui,-apple-system,sans-serif;">Access your Love Reset Audio</a>
             </p>

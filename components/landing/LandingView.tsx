@@ -631,7 +631,7 @@ function LoveResetSection() {
             Free marriage support audio for couples feeling stuck. A 5-day reset for stronger connection: a counselling alternative, no clinical environment required.
           </p>
           <p className="capture-body">
-            The Love Reset Audio is a gentle 5 day audio experience. No cost, no fluff. It is designed to help you breathe, refocus, and return to yourself (and your marriage) with a little more clarity.
+            The Quiet Return is a gentle 5 day audio experience. No cost, no fluff. It is designed to help you breathe, refocus, and return to yourself (and your marriage) with a little more clarity.
           </p>
           <a
             href="https://tobi-yusuf.mykajabi.com/the-quiet-return"

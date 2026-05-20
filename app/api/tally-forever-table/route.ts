@@ -201,7 +201,7 @@ export async function POST(request: Request) {
     "→ Book a Marriage Reflection Call: if you and your partner need a conversation now, not later. 60 minutes. Private. Honest. £295/couple.",
     SCHEDULING_URL,
     "",
-    "→ Listen to the Love Reset Audio: a free 5-day audio experience to help you both press pause and reconnect.",
+    "→ Listen to The Quiet Return: a free 5-day audio experience to help you both press pause and reconnect.",
     "https://lctobiyusuf.systeme.io/935600f7",
     "",
     "The next table is coming. I'll be in touch.",

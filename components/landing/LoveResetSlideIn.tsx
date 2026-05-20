@@ -105,7 +105,7 @@ export function LoveResetSlideIn() {
           Before you go any further, this is free.
         </h2>
         <p className="love-reset-slide-body">
-          The Love Reset Audio is a gentle 5-day experience for you and your partner. No cost. No fluff.
+          The Quiet Return is a gentle 5-day experience for you and your partner. No cost. No fluff.
           Just my voice and a space to breathe.
         </p>
         <a

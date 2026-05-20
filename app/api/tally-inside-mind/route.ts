@@ -195,7 +195,7 @@ export async function POST(request: Request) {
     "Prices will start from £9. You'll have first access before they go public.",
     "",
     "While you wait:",
-    "-> Listen to the Love Reset Audio - my free 5-day audio experience. If you haven't tried it yet, this will give you a taste of what's coming.",
+    "-> Listen to The Quiet Return - my free 5-day audio experience. If you haven't tried it yet, this will give you a taste of what's coming.",
     "https://lctobiyusuf.systeme.io/935600f7",
     "",
     "-> Follow me on Instagram - where the honest conversations happen daily. @MrsTobiYusuf",

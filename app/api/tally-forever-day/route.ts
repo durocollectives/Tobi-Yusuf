@@ -181,7 +181,7 @@ export async function POST(request: Request) {
     "→ Read the Sunday reflections: weekly writing about the real patterns inside marriage. Subscribe on Substack.",
     SUBSTACK_PUBLICATION_SUBSCRIBE_URL,
     "",
-    "→ Listen to the Love Reset Audio: a free 5-day audio experience for you and your partner.",
+    "→ Listen to The Quiet Return: a free 5-day audio experience for you and your partner.",
     "https://lctobiyusuf.systeme.io/935600f7",
     "",
     gladLine,
