@@ -6,7 +6,6 @@ import {
   markLoveResetSlideShownThisSession,
   shouldSuppressLoveResetSlide,
 } from "@/lib/love-reset-prompt-storage";
-import { LoveResetSubscribeForm } from "@/components/landing/LoveResetSubscribeForm";
 
 const SCROLL_FRACTION = 0.5;
 const TIMER_MS = 45_000;
@@ -109,16 +108,15 @@ export function LoveResetSlideIn() {
           The Love Reset Audio is a gentle 5-day experience for you and your partner. No cost. No fluff.
           Just my voice and a space to breathe.
         </p>
-        <LoveResetSubscribeForm
-          variant="slide"
-          idPrefix="lr-slide"
-          onSuccess={() => {
-            window.setTimeout(() => {
-              setEntered(false);
-              window.setTimeout(() => setOpen(false), reducedMotion ? 0 : 380);
-            }, 1600);
-          }}
-        />
+        <a
+          href="https://tobi-yusuf.mykajabi.com/the-quiet-return"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-primary love-reset-slide-submit"
+          onClick={close}
+        >
+          Access the Free Audio
+        </a>
         <button type="button" className="love-reset-slide-dismiss" onClick={close}>
           Not now
         </button>

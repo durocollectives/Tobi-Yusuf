@@ -18,16 +18,16 @@ export function useAnimateIn() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    // ── Legacy .animate-in (stagger by DOM index) ──
     const animateInTargets = Array.from(
       document.querySelectorAll<HTMLElement>(".animate-in")
     );
 
+    const revealTargets = REVEAL_CLASSES.flatMap((cls) =>
+      Array.from(document.querySelectorAll<HTMLElement>(`.${cls}`))
+    );
+
     if (prefersReducedMotion) {
       animateInTargets.forEach((el) => el.classList.add("visible"));
-      const revealTargets = REVEAL_CLASSES.flatMap((cls) =>
-        Array.from(document.querySelectorAll<HTMLElement>(`.${cls}`))
-      );
       revealTargets.forEach((el) => el.classList.add("visible"));
       return;
     }
@@ -35,6 +35,21 @@ export function useAnimateIn() {
     animateInTargets.forEach((el, i) => {
       if (!el.dataset.staggerIndex) el.dataset.staggerIndex = String(i);
     });
+
+    // Reveal elements already in the viewport on mount (no scroll needed)
+    const revealIfInView = (el: HTMLElement, delay = 0) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        setTimeout(() => el.classList.add("visible"), delay);
+        return true;
+      }
+      return false;
+    };
+
+    animateInTargets.forEach((el, i) => {
+      revealIfInView(el, Math.min(i * 60, 200));
+    });
+    revealTargets.forEach((el) => revealIfInView(el));
 
     const animateInObserver = new IntersectionObserver(
       (entries) => {
@@ -51,14 +66,10 @@ export function useAnimateIn() {
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -4% 0px" }
+      // Positive rootMargin pre-triggers animations before elements enter viewport
+      { threshold: 0.04, rootMargin: "0px 0px 15% 0px" }
     );
     animateInTargets.forEach((el) => animateInObserver.observe(el));
-
-    // ── New reveal classes (CSS handles sequencing, observer just adds .visible) ──
-    const revealTargets = REVEAL_CLASSES.flatMap((cls) =>
-      Array.from(document.querySelectorAll<HTMLElement>(`.${cls}`))
-    );
 
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -69,7 +80,7 @@ export function useAnimateIn() {
           }
         });
       },
-      { threshold: 0.08, rootMargin: "0px 0px -5% 0px" }
+      { threshold: 0.04, rootMargin: "0px 0px 12% 0px" }
     );
     revealTargets.forEach((el) => revealObserver.observe(el));
 

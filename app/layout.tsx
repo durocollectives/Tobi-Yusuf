@@ -28,32 +28,58 @@ const playfair = Playfair_Display({
 });
 
 const SITE_DESCRIPTION =
-  "A counselling alternative for couples seeking honest marriage conversation. Faith-led marriage mentor, speaker, and reflection guide based in London. Real marriages. Real conversations.";
+  "Tobi Yusuf — marriage mentor, speaker, and relational intelligence advisor based in London. A faith-led alternative to marriage counselling for couples seeking honest conversation about marriage, identity, and the life they are building together.";
 
-const SITE_TITLE_DEFAULT = "Tobi Yusuf · Marriage, Relationships & Identity";
+const SITE_TITLE_DEFAULT = "Tobi Yusuf | Marriage Mentor, Speaker & Relational Intelligence Advisor";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   icons: {
-    icon: SITE_IMAGES.favicon,
+    icon: [
+      { url: "/icon.png", type: "image/png", sizes: "48x48" },
+      { url: SITE_IMAGES.favicon, type: "image/png" },
+    ],
     apple: SITE_IMAGES.appleTouchIcon,
+    shortcut: "/icon.png",
   },
   title: {
     default: SITE_TITLE_DEFAULT,
     template: "%s | Tobi Yusuf",
   },
   description: SITE_DESCRIPTION,
+  keywords: [
+    "Tobi Yusuf",
+    "marriage mentor London",
+    "marriage counselling alternative",
+    "premarital counselling",
+    "faith-led marriage mentor",
+    "relational intelligence",
+    "cultural intelligence",
+    "couples speaker",
+    "marriage reflection guide",
+    "Christian marriage mentor",
+    "marriage support London",
+    "relationship advisor UK",
+  ],
+  authors: [{ name: "Tobi Yusuf", url: getSiteUrl() }],
+  creator: "Tobi Yusuf",
+  publisher: "Tobi Yusuf",
+  alternates: {
+    canonical: getSiteUrl(),
+  },
   openGraph: {
     type: "website",
     locale: "en_GB",
     siteName: "Tobi Yusuf",
     title: SITE_TITLE_DEFAULT,
     description: SITE_DESCRIPTION,
-    url: "/",
+    url: getSiteUrl(),
     images: [
       {
         url: SITE_IMAGES.img1,
-        alt: "Tobi Yusuf, marriage and relationships",
+        width: 1200,
+        height: 630,
+        alt: "Tobi Yusuf — Marriage Mentor and Speaker",
       },
     ],
   },
@@ -62,6 +88,17 @@ export const metadata: Metadata = {
     title: SITE_TITLE_DEFAULT,
     description: SITE_DESCRIPTION,
     images: [SITE_IMAGES.img1],
+    creator: "@tobiyusuf",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -82,17 +119,37 @@ export default function RootLayout({
     "@graph": [
       {
         "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
         name: "Tobi Yusuf",
         url: siteUrl,
         description: SITE_DESCRIPTION,
+        potentialAction: {
+          "@type": "SearchAction",
+          target: { "@type": "EntryPoint", urlTemplate: `${siteUrl}/?s={search_term_string}` },
+          "query-input": "required name=search_term_string",
+        },
       },
       {
         "@type": "Person",
+        "@id": `${siteUrl}/#person`,
         name: "Tobi Yusuf",
         url: siteUrl,
-        jobTitle:
-          "Marriage and relationships mentor, speaker, and experience curator",
+        image: `${siteUrl}${SITE_IMAGES.img1}`,
+        description: SITE_DESCRIPTION,
+        jobTitle: "Marriage Mentor, Speaker & Relational Intelligence Advisor",
+        worksFor: { "@type": "Organization", name: "Tobi Yusuf" },
+        address: { "@type": "PostalAddress", addressLocality: "London", addressCountry: "GB" },
+        knowsAbout: ["Marriage mentoring", "Relational intelligence", "Cultural intelligence", "Premarital counselling", "Faith-led relationships"],
         ...(sameAs.length > 0 ? { sameAs } : {}),
+      },
+      {
+        "@type": "Organization",
+        "@id": `${siteUrl}/#organization`,
+        name: "Tobi Yusuf",
+        url: siteUrl,
+        logo: { "@type": "ImageObject", url: `${siteUrl}${SITE_IMAGES.siteLogo}` },
+        founder: { "@id": `${siteUrl}/#person` },
+        address: { "@type": "PostalAddress", addressLocality: "London", addressCountry: "GB" },
       },
     ],
   };

@@ -103,6 +103,16 @@ export function SiteNav() {
           </span>
           <span className="nav-logo-text">Tobi Yusuf</span>
         </Link>
+        <ul className="nav-links" id="navLinksDesktop" aria-hidden>
+          {LINKS.map(([label, href]) => {
+            const fullHref = href.startsWith("/") ? href : `${prefix}${href}`;
+            return (
+              <li key={label}>
+                <a href={fullHref}>{label}</a>
+              </li>
+            );
+          })}
+        </ul>
         <button
           type="button"
           className={`nav-toggle${navOpen ? " is-open" : ""}`}
@@ -116,18 +126,6 @@ export function SiteNav() {
           <span />
         </button>
       </div>
-
-      {/* Desktop nav links stay in normal flow */}
-      <ul className="nav-links" id="navLinksDesktop" aria-hidden>
-        {LINKS.map(([label, href]) => {
-          const fullHref = href.startsWith("/") ? href : `${prefix}${href}`;
-          return (
-            <li key={label}>
-              <a href={fullHref}>{label}</a>
-            </li>
-          );
-        })}
-      </ul>
 
       {/* Mobile overlay portalled to body so it escapes all stacking contexts */}
       {mounted && navOpen && createPortal(menuOverlay, document.body)}

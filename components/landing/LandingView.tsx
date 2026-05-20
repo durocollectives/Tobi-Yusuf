@@ -19,7 +19,6 @@ import { useAnimateIn } from "./useAnimateIn";
 import { SiteNav } from "./SiteNav";
 import { SiteFooter } from "./SiteFooter";
 import { FeaturedPublications } from "./FeaturedPublications";
-import { LoveResetSubscribeForm } from "./LoveResetSubscribeForm";
 
 const HERO_SLIDES = [
   { src: "/assets/images/6.jpg",        position: "center 35%" },
@@ -126,8 +125,40 @@ export function LandingView() {
       <SiteNav />
       <main>
         <section className="hero" aria-label="Introduction">
-          {/* Carousel slides — crossfade */}
-          <div className="hero-photo" aria-hidden>
+          {/* ── Left: editorial reading room ── */}
+          <div className="hero-left">
+            <p className="hero-eyebrow hero-anim-1">
+              Marriage · Relationship · Identity
+            </p>
+
+            <h1 className="hero-headline hero-anim-2">
+              Real conversations for real marriages.
+            </h1>
+
+            <p className="hero-role hero-anim-2b">
+              Relational &amp; Cultural Intelligence Advisor | Speaker | Facilitator | Conversation Host
+            </p>
+
+            <p className="hero-body-text hero-anim-3">
+              A luxury editorial space for couples seeking marriage counselling alternatives, premarital support, or a faith-led marriage mentor: honest, grounded conversation about marriage, identity, and the life you&apos;re building.
+            </p>
+
+            <div className="hero-ctas hero-anim-4">
+              <a href="#experiences" className="btn btn-terracotta btn--sm">
+                Explore Experiences
+              </a>
+              <a href="#about" className="btn btn-ghost-light btn--sm">
+                About Tobi
+              </a>
+            </div>
+
+            <p className="hero-attribution" aria-hidden>
+              London · Since 2014
+            </p>
+          </div>
+
+          {/* ── Right: photograph, edge to edge ── */}
+          <div className="hero-right" aria-hidden>
             {HERO_SLIDES.map((slide, i) => (
               <div
                 key={slide.src}
@@ -135,38 +166,16 @@ export function LandingView() {
               >
                 <Image
                   src={slide.src}
-                  alt="Tobi Yusuf, marriage counselling alternative and reflection guide based in London"
+                  alt=""
                   fill
                   priority={i === 0}
-                  sizes="100vw"
+                  sizes="(max-width: 820px) 100vw, 55vw"
                   className="hero-photo-img"
                   style={{ objectPosition: slide.position }}
                 />
               </div>
             ))}
-          </div>
-
-          <div className="hero-content">
-            <p className="hero-eyebrow hero-anim-1">
-              Marriage · Relationship · Identity
-            </p>
-            <h1 className="hero-headline hero-anim-2">
-              Real conversations for real <em>marriages.</em>
-            </h1>
-            <p className="hero-positioning hero-anim-2b">
-              <strong>Relational &amp; Cultural Intelligence Advisor | Speaker | Facilitator | Conversation Host</strong>
-            </p>
-            <p className="hero-sub hero-anim-3">
-              A luxury editorial space for couples seeking marriage counselling alternatives, premarital support, or a faith-led marriage mentor: honest, grounded conversation about marriage, identity, and the life you&apos;re building.
-            </p>
-            <div className="hero-ctas hero-anim-3">
-              <a href="#experiences" className="btn btn-terracotta">
-                Explore Experiences
-              </a>
-              <a href="#about" className="btn btn-ghost-light">
-                About Tobi
-              </a>
-            </div>
+            <div className="hero-right-veil" />
           </div>
 
           <div className="hero-scroll" aria-hidden>
@@ -190,16 +199,26 @@ export function LandingView() {
         </div>
 
         <section className="proof-strip" aria-label="Impact" ref={proofRef}>
-          <div className="proof-hero-stat">
-            <span className="proof-hero-num">{count2M}M+</span>
-            <p className="proof-hero-caption">People already in this conversation.</p>
-          </div>
-          <div className="proof-sub-row">
-            <span>{count10places} intimate places per experience</span>
-            <span aria-hidden>·</span>
-            <span>{count10years}+ years of real conversations</span>
-            <span aria-hidden>·</span>
-            <span>One guiding principle: truth</span>
+          <div className="proof-editorial">
+            <div className="proof-stat animate-in">
+              <span className="proof-stat-num">{count2M}M+</span>
+              <p className="proof-stat-label">People in<br />this conversation</p>
+            </div>
+            <div className="proof-stat-divider" aria-hidden />
+            <div className="proof-stat animate-in">
+              <span className="proof-stat-num">{count10places}</span>
+              <p className="proof-stat-label">Intimate places<br />per experience</p>
+            </div>
+            <div className="proof-stat-divider" aria-hidden />
+            <div className="proof-stat animate-in">
+              <span className="proof-stat-num">{count10years}+</span>
+              <p className="proof-stat-label">Years of real<br />conversations</p>
+            </div>
+            <div className="proof-stat-divider" aria-hidden />
+            <div className="proof-truth animate-in">
+              <p>One guiding<br />principle:</p>
+              <p className="proof-truth-word">truth.</p>
+            </div>
           </div>
         </section>
 
@@ -273,9 +292,8 @@ export function LandingView() {
                   <SiteImage
                     src={SITE_IMAGES.img4}
                     alt="Tobi Yusuf, faith-led marriage mentor and relationship guide"
-                    ratio="4/3"
+                    ratio="3/4"
                     sizes="(max-width: 900px) 100vw, min(520px, 50vw)"
-                    className="image-dim"
                   />
                 </div>
               </div>
@@ -324,25 +342,30 @@ export function LandingView() {
 
         <section className="work-pillars-section" aria-labelledby="work-pillars-heading">
           <div className="work-pillars-inner section--narrow">
+            <p className="work-pillars-label reveal-whisper" aria-hidden>The Work</p>
             {[
               {
+                index: "01",
                 title: "Relational Intelligence",
                 body: "A marriage counselling alternative for individuals and couples, helping you recognise the patterns shaping your relationship, without the clinical environment of traditional therapy.",
                 note: "Marriage advocacy · Couples work · Intentional Space · Reflections",
               },
               {
+                index: "02",
                 title: "Cultural Intelligence",
                 body: "Supporting organisations in navigating cultural nuance and building stronger communication across diverse teams.",
                 note: null,
                 extra: { href: "https://www.instagram.com/luxurymeetscultureofficial", text: "Luxury Meets Culture" },
               },
               {
+                index: "03",
                 title: "Intentional Experiences",
                 body: "Curated gatherings designed to create space for honest conversations, reflection, and connection.",
                 note: "Intentional Space · Forever Table · Forever & A Day",
               },
             ].map((pillar) => (
               <article key={pillar.title} className="work-pillar-row animate-in">
+                <span className="work-pillar-index" aria-hidden>{pillar.index}</span>
                 <h3 className="work-pillar-row-title" id={pillar.title === "Relational Intelligence" ? "work-pillars-heading" : undefined}>
                   {pillar.title}
                 </h3>
@@ -352,12 +375,7 @@ export function LandingView() {
                   {"extra" in pillar && pillar.extra ? (
                     <p className="work-pillar-subnote">
                       Delivered through{" "}
-                      <a
-                        href={pillar.extra.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ color: "inherit", textDecoration: "underline" }}
-                      >
+                      <a href={pillar.extra.href} target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>
                         {pillar.extra.text}
                       </a>
                     </p>
@@ -607,15 +625,26 @@ function LoveResetSection() {
   return (
     <section className="capture-section" aria-labelledby="capture-heading">
       <div className="capture-inner animate-in">
-        <p className="capture-heading-1" id="capture-heading" aria-hidden>Let this be</p>
-        <p className="capture-heading-2">your first step.</p>
-        <p className="capture-body">
-          Free marriage support audio for couples feeling stuck. A 5-day reset for stronger connection: a counselling alternative, no clinical environment required.
-        </p>
-        <p className="capture-body">
-          The Love Reset Audio is a gentle 5 day audio experience. No cost, no fluff. It is designed to help you breathe, refocus, and return to yourself (and your marriage) with a little more clarity.
-        </p>
-        <LoveResetSubscribeForm variant="section" idPrefix="lr-section" />
+        <div>
+          <p className="capture-heading-1" id="capture-heading" aria-hidden>Let this be</p>
+          <p className="capture-heading-2">your first step.</p>
+        </div>
+        <div>
+          <p className="capture-body">
+            Free marriage support audio for couples feeling stuck. A 5-day reset for stronger connection: a counselling alternative, no clinical environment required.
+          </p>
+          <p className="capture-body">
+            The Love Reset Audio is a gentle 5 day audio experience. No cost, no fluff. It is designed to help you breathe, refocus, and return to yourself (and your marriage) with a little more clarity.
+          </p>
+          <a
+            href="https://tobi-yusuf.mykajabi.com/the-quiet-return"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-secondary"
+          >
+            Access the Free Audio
+          </a>
+        </div>
       </div>
     </section>
   );
