@@ -67,7 +67,7 @@ export function useAnimateIn() {
         });
       },
       // Positive rootMargin pre-triggers animations before elements enter viewport
-      { threshold: 0.04, rootMargin: "0px 0px 15% 0px" }
+      { threshold: 0.04, rootMargin: "0px 0px 25% 0px" }
     );
     animateInTargets.forEach((el) => animateInObserver.observe(el));
 
@@ -80,7 +80,7 @@ export function useAnimateIn() {
           }
         });
       },
-      { threshold: 0.04, rootMargin: "0px 0px 12% 0px" }
+      { threshold: 0.04, rootMargin: "0px 0px 20% 0px" }
     );
     revealTargets.forEach((el) => revealObserver.observe(el));
 

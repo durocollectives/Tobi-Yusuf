@@ -127,12 +127,12 @@ img {
 
 .section-label {
   font-family: var(--font-body);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.38em;
   color: var(--signature);
-  opacity: 0.65;
+  opacity: 1;
 }
 
 .body-text {
@@ -155,7 +155,7 @@ img {
 /* OVERLINE — precise spaced-caps label */
 .overline {
   font-family: var(--font-body);
-  font-size: 0.74rem;
+  font-size: 0.82rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.35em;
@@ -250,7 +250,7 @@ img {
   align-items: center;
   justify-content: center;
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.18em;
@@ -270,7 +270,7 @@ img {
 
 .btn--sm {
   padding: 0.75rem 1.75rem;
-  font-size: 0.7rem;
+  font-size: 0.76rem;
 }
 
 .btn-primary {
@@ -287,15 +287,15 @@ img {
 }
 
 .btn-secondary {
-  background: transparent;
+  background: rgba(61, 31, 43, 0.04);
   color: var(--anchor);
-  border-color: rgba(61, 31, 43, 0.3);
+  border-color: rgba(61, 31, 43, 0.5);
 }
 
 .btn-secondary:hover {
-  background: transparent;
+  background: rgba(61, 31, 43, 0.08);
   color: var(--anchor);
-  border-color: rgba(61, 31, 43, 0.65);
+  border-color: rgba(61, 31, 43, 0.85);
 }
 
 .capture-section .btn-secondary {
@@ -310,13 +310,13 @@ img {
 }
 
 .btn-ghost-light {
-  background: transparent;
+  background: rgba(250, 247, 244, 0.08);
   color: rgba(250, 247, 244, 0.82);
-  border-color: rgba(250, 247, 244, 0.55);
+  border-color: rgba(250, 247, 244, 0.75);
 }
 
 .btn-ghost-light:hover {
-  background: rgba(250, 247, 244, 0.08);
+  background: rgba(250, 247, 244, 0.15);
   color: var(--text-on-dark);
   transform: none;
 }
@@ -652,10 +652,10 @@ img {
 
 .hero-eyebrow {
   font-family: var(--font-body);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: rgba(196, 149, 127, 0.55);
+  color: rgba(196, 149, 127, 0.85);
   margin: 0 0 2.75rem;
   font-weight: 300;
 }
@@ -674,10 +674,10 @@ img {
 /* Role / title line */
 .hero-role {
   font-family: var(--font-body);
-  font-size: clamp(0.7rem, 0.8vw, 0.8rem);
+  font-size: clamp(0.82rem, 0.9vw, 0.92rem);
   font-weight: 300;
   letter-spacing: 0.08em;
-  color: rgba(250, 247, 244, 0.45);
+  color: rgba(250, 247, 244, 0.72);
   margin: 0 0 1.75rem;
   line-height: 1.7;
   text-transform: uppercase;
@@ -689,7 +689,7 @@ img {
   font-size: clamp(0.92rem, 1vw, 1rem);
   font-weight: 300;
   line-height: 1.9;
-  color: rgba(250, 247, 244, 0.52);
+  color: rgba(250, 247, 244, 0.75);
   margin: 0 0 2.75rem;
   max-width: 32rem;
 }
@@ -709,10 +709,10 @@ img {
 /* Tiny attribution whisper at bottom of left panel */
 .hero-attribution {
   font-family: var(--font-body);
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: rgba(250, 247, 244, 0.13);
+  color: rgba(250, 247, 244, 0.32);
   margin: 0;
   padding-top: 4rem;
 }
@@ -927,7 +927,7 @@ img {
   font-weight: 300;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(250, 247, 244, 0.38);
+  color: rgba(250, 247, 244, 0.65);
   line-height: 1.7;
   margin: 0;
 }
@@ -949,7 +949,7 @@ img {
   font-family: var(--font-display);
   font-size: clamp(1rem, 1.4vw, 1.2rem);
   font-style: italic;
-  color: rgba(250, 247, 244, 0.32);
+  color: rgba(250, 247, 244, 0.55);
   line-height: 1.6;
   margin: 0;
 }
@@ -1035,7 +1035,7 @@ img {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: press-marquee-scroll 40s linear infinite;
+  animation: press-marquee-scroll 32s linear infinite;
   align-items: center;
   gap: 0;
 }
@@ -1078,11 +1078,11 @@ img {
   border: none;
   box-shadow: none;
   transition: opacity 0.35s ease;
-  opacity: 0.55;
+  opacity: 0.8;
 }
 
 .press-item-link:hover {
-  opacity: 0.85;
+  opacity: 1;
 }
 
 .press-logo-frame {
@@ -1097,10 +1097,10 @@ img {
   max-width: 100%;
   width: auto;
   height: auto;
-  max-height: 36px;
+  max-height: 42px;
   object-fit: contain;
   object-position: center;
-  filter: grayscale(0.4) contrast(1.1);
+  filter: grayscale(0.2) contrast(1.2);
 }
 
 .press-name-fallback {
@@ -1918,7 +1918,7 @@ img {
   font-size: clamp(0.88rem, 0.2vw + 0.84rem, 0.96rem);
   font-weight: 300;
   font-style: italic;
-  color: rgba(122, 79, 90, 0.45);
+  color: rgba(122, 79, 90, 0.75);
   margin-top: 2.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(61, 31, 43, 0.06);
@@ -3380,8 +3380,8 @@ img {
 .footer-disclaimer {
   font-family: var(--font-body);
   font-size: 0.68rem;
-  color: #7a4f5a;
-  opacity: 0.55;
+  color: rgba(250, 247, 244, 0.6);
+  opacity: 1;
   max-width: 52rem;
   line-height: 1.7;
   margin: 0 0 0.75rem;
@@ -3390,7 +3390,7 @@ img {
 .footer-copy {
   font-family: var(--font-body);
   font-size: 0.72rem;
-  color: rgba(250, 247, 244, 0.18);
+  color: rgba(250, 247, 244, 0.55);
 }
 
 .footer-faith {
@@ -3398,7 +3398,7 @@ img {
   font-size: 0.82rem;
   font-style: italic;
   font-weight: 300;
-  color: rgba(250, 247, 244, 0.4);
+  color: rgba(250, 247, 244, 0.65);
   max-width: 420px;
   text-align: left;
   line-height: 1.6;
@@ -4005,10 +4005,10 @@ img {
 /* —— Scroll animations — refined timing —— */
 .animate-in {
   opacity: 0;
-  transform: translate3d(0, 10px, 0);
+  transform: translate3d(0, 24px, 0);
   transition:
-    opacity 900ms var(--ease-luxury),
-    transform 900ms var(--ease-luxury);
+    opacity 1000ms var(--ease-luxury),
+    transform 1000ms var(--ease-luxury);
   will-change: opacity, transform;
 }
 
@@ -4048,7 +4048,7 @@ img {
 /* ── REVEAL DRIFT — gentle vertical drift for body copy ── */
 .reveal-drift {
   opacity: 0;
-  transform: translate3d(0, 12px, 0);
+  transform: translate3d(0, 20px, 0);
   transition:
     opacity 800ms var(--ease-luxury),
     transform 800ms var(--ease-luxury);
@@ -4090,7 +4090,7 @@ img {
 /* ── REVEAL SEQUENCE — parent that sequences children via CSS delay ── */
 .reveal-sequence > * {
   opacity: 0;
-  transform: translate3d(0, 20px, 0);
+  transform: translate3d(0, 28px, 0);
   transition:
     opacity var(--dur-body) var(--ease-out-expo),
     transform var(--dur-body) var(--ease-out-expo);

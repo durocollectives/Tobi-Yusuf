@@ -109,10 +109,7 @@ export function LandingView() {
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setProofVisible(true);
-          observer.disconnect();
-        }
+        setProofVisible(entry.isIntersecting);
       },
       { threshold: 0.2 }
     );
