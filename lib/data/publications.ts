@@ -14,10 +14,10 @@ export type FeaturedPublication = {
 };
 
 export const FEATURED_PUBLICATIONS: FeaturedPublication[] = [
-  { id: "the-sun", name: "The Sun", logoSrc: "/assets/images/logo1.jpg" },
-  { id: "stylist", name: "Stylist", logoSrc: "/assets/images/logo2.jpg" },
-  { id: "the-times", name: "The TIMES", logoSrc: "/assets/images/logo3.png" },
-  { id: "bellanaija", name: "Bellanaija", logoSrc: "/assets/images/logo4.png" },
-  { id: "ipaper", name: "iPaper", logoSrc: "/assets/images/logo5.jpeg" },
-  { id: "logo6", name: "Press", logoSrc: "/assets/images/logo6.jpeg" },
+  { id: "the-sun", name: "The Sun", logoSrc: "/assets/images/logo1.webp" },
+  { id: "stylist", name: "Stylist", logoSrc: "/assets/images/logo2.webp" },
+  { id: "the-times", name: "The TIMES", logoSrc: "/assets/images/logo3.webp" },
+  { id: "bellanaija", name: "Bellanaija", logoSrc: "/assets/images/logo4.webp" },
+  { id: "ipaper", name: "iPaper", logoSrc: "/assets/images/logo5.webp" },
+  { id: "logo6", name: "Press", logoSrc: "/assets/images/logo6.webp" },
 ];

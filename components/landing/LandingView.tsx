@@ -21,15 +21,15 @@ import { SiteFooter } from "./SiteFooter";
 import { FeaturedPublications } from "./FeaturedPublications";
 
 const HERO_SLIDES = [
-  { src: "/assets/images/6.jpg",        position: "center 35%" },
-  { src: "/assets/images/GSON3081.jpg", position: "center 22%" },
-  { src: "/assets/images/GSON3097.jpg", position: "center 18%" },
+  { src: "/assets/images/6.webp",        position: "center 35%" },
+  { src: "/assets/images/GSON3081.webp", position: "center 22%" },
+  { src: "/assets/images/GSON3097.webp", position: "center 18%" },
 ];
 
 const FAMILIAR_SLIDES = [
-  { primary: "/assets/images/GSON2579.jpg", fallback: "/assets/images/1.jpg" },
-  { primary: "/assets/images/GSON2657.jpg", fallback: "/assets/images/2.jpg" },
-  { primary: "/assets/images/GSON2671.jpg", fallback: "/assets/images/3.jpg" },
+  { primary: "/assets/images/GSON2579.webp", fallback: "/assets/images/1.webp" },
+  { primary: "/assets/images/GSON2657.webp", fallback: "/assets/images/2.webp" },
+  { primary: "/assets/images/GSON2671.webp", fallback: "/assets/images/3.webp" },
 ];
 
 function useCountUp(target: number, duration: number, active: boolean, reduced: boolean) {

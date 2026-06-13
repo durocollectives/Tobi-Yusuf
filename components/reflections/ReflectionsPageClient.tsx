@@ -1,18 +1,67 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { reflections } from "@/lib/data/reflections";
-import {
-  SUBSTACK_PUBLICATION_SUBSCRIBE_URL,
-  substackPostUrl,
-} from "@/lib/data/site";
+import { SUBSTACK_PUBLICATION_SUBSCRIBE_URL } from "@/lib/data/site";
 import { SiteNav } from "@/components/landing/SiteNav";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 import { useAnimateIn } from "@/components/landing/useAnimateIn";
 import { HeroSection } from "@/components/reflections/HeroSection";
 
+type SubstackPost = {
+  title: string;
+  excerpt: string;
+  link: string;
+};
+
+function useSubstackFeed(feedUrl: string) {
+  const [posts, setPosts] = useState<SubstackPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const res = await fetch(feedUrl);
+        if (!res.ok) throw new Error("Feed fetch failed");
+        const text = await res.text();
+        const doc = new DOMParser().parseFromString(text, "text/xml");
+        if (doc.querySelector("parsererror")) throw new Error("Invalid XML");
+
+        const items = Array.from(doc.querySelectorAll("item")).map((item) => {
+          const title = item.querySelector("title")?.textContent?.trim() ?? "";
+          const link = item.querySelector("link")?.textContent?.trim() ?? "";
+          const rawDesc = item.querySelector("description")?.textContent ?? "";
+          // Strip HTML tags, collapse whitespace, truncate to 120 chars
+          const plain = rawDesc.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+          const excerpt = plain.length > 120 ? plain.slice(0, 120).trimEnd() + "…" : plain;
+          return { title, excerpt, link };
+        });
+
+        if (!cancelled) {
+          setPosts(items);
+          setLoading(false);
+        }
+      } catch {
+        if (!cancelled) {
+          setError(true);
+          setLoading(false);
+        }
+      }
+    }
+
+    load();
+    return () => { cancelled = true; };
+  }, [feedUrl]);
+
+  return { posts, loading, error };
+}
+
 export function ReflectionsPageClient() {
   useAnimateIn();
+  const { posts, loading, error } = useSubstackFeed("https://mrstobiyusuf.substack.com/feed");
 
   return (
     <>
@@ -23,14 +72,29 @@ export function ReflectionsPageClient() {
         <section className="section reflections-section">
           <div className="section--narrow">
             <div className="reflections-grid">
-              {reflections.map((r) => (
-                <article key={r.title} className="animate-in reflection-card">
-                  <p className="reflection-date">{r.date}</p>
-                  <h2 className="reflection-title">{r.title}</h2>
-                  <p className="reflection-excerpt">{r.excerpt}</p>
+              {loading && (
+                <p className="reflections-loading">Loading reflections…</p>
+              )}
+              {error && (
+                <p className="reflections-error">
+                  Could not load posts.{" "}
+                  <a
+                    href="https://mrstobiyusuf.substack.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Visit Substack →
+                  </a>
+                </p>
+              )}
+              {!loading && !error && posts.map((post) => (
+                <article key={post.link} className="animate-in reflection-card">
+                  <p className="reflection-date">Sunday Reflection</p>
+                  <h2 className="reflection-title">{post.title}</h2>
+                  <p className="reflection-excerpt">{post.excerpt}</p>
                   <a
                     className="reflection-link"
-                    href={substackPostUrl(r.substackUrl)}
+                    href={post.link}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

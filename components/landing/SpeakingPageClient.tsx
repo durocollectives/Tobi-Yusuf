@@ -45,7 +45,7 @@ const HERO_SLIDES: {
   ctaHref: string;
 }[] = [
   {
-    image: "/assets/images/GSON3031.jpg",
+    image: "/assets/images/GSON3031.webp",
     title: "Invite Tobi Into the Conversation",
     subtitle:
       "I speak at conferences, corporate events, faith-based gatherings, universities, and leadership programmes. My talks sit at the intersection of relational intelligence, cultural understanding, and the honest conversations most rooms are too polished to have.",
@@ -54,7 +54,7 @@ const HERO_SLIDES: {
     ctaHref: "#speaking-enquiry",
   },
   {
-    image: "/assets/images/GSON8453.JPG",
+    image: "/assets/images/GSON8453.webp",
     title: "From the Bedroom to the Boardroom",
     subtitle:
       "The patterns that shape our most personal relationships don’t stay at home, they follow us into every room we lead in, collaborate in, and build in. This talk explores the hidden cost of unresolved relational stress on workplace performance, and why organisations that care about their people should care about the whole person.",
@@ -63,7 +63,7 @@ const HERO_SLIDES: {
     ctaHref: "#speaking-enquiry",
   },
   {
-    image: "/assets/images/GSON3097.jpg",
+    image: "/assets/images/GSON3097.webp",
     title: "Cultural Intelligence in Practice",
     subtitle:
       "Most organisations have a diversity statement. Very few have the cultural competence to back it up. This talk moves beyond good intentions into the practical, operational understanding of how different cultures communicate, celebrate, and do business, rooted in real-world experience training venues, teams, and organisations through Luxury Meets Culture.",
@@ -72,7 +72,7 @@ const HERO_SLIDES: {
     ctaHref: "#speaking-enquiry",
   },
   {
-    image: "/assets/images/GSON2809.jpg",
+    image: "/assets/images/GSON2809.webp",
     title: "Relational Intelligence for the Next Generation",
     subtitle:
       "Nobody teaches you about communication patterns, emotional maturity, or how to choose a life partner wisely, until you’re already in crisis. This is a practical, honest session about love, conflict, partnership, and what no one explains early enough.",
@@ -81,7 +81,7 @@ const HERO_SLIDES: {
     ctaHref: "#speaking-enquiry",
   },
   {
-    image: "/assets/images/GSON3081.jpg",
+    image: "/assets/images/GSON3081.webp",
     title: "About Tobi",
     subtitle:
       "I’m a wife of 14 years, a mother of three daughters, and the founder of RIAH and Luxury Meets Culture. I don’t speak from theory, I speak from a marriage I’m still building, an industry I’m still challenging, and rooms I’ve sat in with real couples navigating real patterns. My talks bridge lived experience with practical insight, so audiences leave not just inspired but genuinely changed in how they see their relationships and their work.",
@@ -249,7 +249,7 @@ export function SpeakingPageClient() {
             </div>
             <div className="speaking-enquiry-visual">
               <Image
-                src="/assets/images/yes(1).jpeg"
+                src="/assets/images/yes(1).webp"
                 alt=""
                 width={1066}
                 height={1600}
