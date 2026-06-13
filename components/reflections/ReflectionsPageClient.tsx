@@ -30,6 +30,7 @@ function useSubstackFeed() {
         const res = await fetch(RSS2JSON_URL);
         if (!res.ok) throw new Error("Feed fetch failed");
         const json = await res.json();
+        console.log("[useSubstackFeed] raw response:", json);
         if (json.status !== "ok") throw new Error("Feed error");
 
         const items = (json.items as Array<{ title: string; description: string; link: string }>).map(
@@ -39,6 +40,7 @@ function useSubstackFeed() {
             return { title: item.title, excerpt, link: item.link };
           }
         );
+        console.log("[useSubstackFeed] mapped posts:", items);
 
         if (!cancelled) {
           setPosts(items);
