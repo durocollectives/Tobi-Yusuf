@@ -14,7 +14,10 @@ type SubstackPost = {
   link: string;
 };
 
-function useSubstackFeed(feedUrl: string) {
+const RSS2JSON_URL =
+  "https://api.rss2json.com/v1/api.json?rss_url=https://mrstobiyusuf.substack.com/feed";
+
+function useSubstackFeed() {
   const [posts, setPosts] = useState<SubstackPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -24,21 +27,18 @@ function useSubstackFeed(feedUrl: string) {
 
     async function load() {
       try {
-        const res = await fetch(feedUrl);
+        const res = await fetch(RSS2JSON_URL);
         if (!res.ok) throw new Error("Feed fetch failed");
-        const text = await res.text();
-        const doc = new DOMParser().parseFromString(text, "text/xml");
-        if (doc.querySelector("parsererror")) throw new Error("Invalid XML");
+        const json = await res.json();
+        if (json.status !== "ok") throw new Error("Feed error");
 
-        const items = Array.from(doc.querySelectorAll("item")).map((item) => {
-          const title = item.querySelector("title")?.textContent?.trim() ?? "";
-          const link = item.querySelector("link")?.textContent?.trim() ?? "";
-          const rawDesc = item.querySelector("description")?.textContent ?? "";
-          // Strip HTML tags, collapse whitespace, truncate to 120 chars
-          const plain = rawDesc.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
-          const excerpt = plain.length > 120 ? plain.slice(0, 120).trimEnd() + "…" : plain;
-          return { title, excerpt, link };
-        });
+        const items = (json.items as Array<{ title: string; description: string; link: string }>).map(
+          (item) => {
+            const plain = item.description.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+            const excerpt = plain.length > 120 ? plain.slice(0, 120).trimEnd() + "…" : plain;
+            return { title: item.title, excerpt, link: item.link };
+          }
+        );
 
         if (!cancelled) {
           setPosts(items);
@@ -54,14 +54,14 @@ function useSubstackFeed(feedUrl: string) {
 
     load();
     return () => { cancelled = true; };
-  }, [feedUrl]);
+  }, []);
 
   return { posts, loading, error };
 }
 
 export function ReflectionsPageClient() {
   useAnimateIn();
-  const { posts, loading, error } = useSubstackFeed("https://mrstobiyusuf.substack.com/feed");
+  const { posts, loading, error } = useSubstackFeed();
 
   return (
     <>
