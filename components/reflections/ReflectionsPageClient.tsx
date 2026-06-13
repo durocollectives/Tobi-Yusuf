@@ -62,8 +62,8 @@ function useSubstackFeed() {
 }
 
 export function ReflectionsPageClient() {
-  useAnimateIn();
   const { posts, loading, error } = useSubstackFeed();
+  useAnimateIn(posts);
 
   return (
     <>

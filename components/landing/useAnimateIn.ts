@@ -12,7 +12,7 @@ const REVEAL_CLASSES = [
   "reveal-whisper",
 ] as const;
 
-export function useAnimateIn() {
+export function useAnimateIn(dep?: unknown) {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -88,5 +88,6 @@ export function useAnimateIn() {
       animateInObserver.disconnect();
       revealObserver.disconnect();
     };
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dep]);
 }
