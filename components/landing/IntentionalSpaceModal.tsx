@@ -23,6 +23,7 @@ export function IntentionalSpaceModal() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (new Date() >= new Date("2025-07-06T00:00:00Z")) return;
     if (hasBeenShown()) return;
     const t = window.setTimeout(() => {
       markShown();
