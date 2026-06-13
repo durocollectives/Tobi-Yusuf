@@ -828,6 +828,16 @@ img {
   .hero-attribution {
     padding-top: 2.5rem;
   }
+
+  .hero-anim-1,
+  .hero-anim-2,
+  .hero-anim-2b,
+  .hero-anim-3,
+  .hero-anim-4 {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
 }
 
 
