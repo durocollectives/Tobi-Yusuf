@@ -23,7 +23,7 @@ export function IntentionalSpaceModal() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (new Date() >= new Date("2025-07-06T00:00:00Z")) return;
+    if (new Date() >= new Date("2026-07-06T00:00:00Z")) return;
     if (hasBeenShown()) return;
     const t = window.setTimeout(() => {
       markShown();
@@ -61,14 +61,14 @@ export function IntentionalSpaceModal() {
           ×
         </button>
 
-        <p className="is-modal-kicker">July 2025</p>
+        <p className="is-modal-kicker">July 2026</p>
 
         <h2 id="is-modal-title" className="is-modal-title">
           The Intentional Space
         </h2>
 
         <p className="is-modal-body">
-          A curated gathering for couples ready to go deeper — honest conversation,
+          A curated gathering for couples ready to go deeper. Honest conversation,
           guided reflection, and a room designed for the marriage you actually want.
           Spaces are limited.
         </p>
