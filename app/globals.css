@@ -4887,3 +4887,110 @@ img {
     width: 100%;
   }
 }
+
+/* —— Intentional Space modal —— */
+.is-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(30, 12, 18, 0.65);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 380ms var(--ease-luxury);
+}
+
+.is-modal-backdrop--visible {
+  opacity: 1;
+}
+
+.is-modal-card {
+  position: relative;
+  background: var(--background);
+  width: 100%;
+  max-width: 420px;
+  padding: 2.75rem 2.25rem 2.25rem;
+  border: 1px solid rgba(61, 31, 43, 0.12);
+  box-shadow:
+    0 32px 80px -24px rgba(30, 12, 18, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  transform: translate3d(0, 28px, 0);
+  opacity: 0;
+  transition:
+    transform 420ms var(--ease-luxury) 60ms,
+    opacity 380ms var(--ease-luxury) 60ms;
+}
+
+.is-modal-card--visible {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.is-modal-close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--midtone);
+  cursor: pointer;
+  transition: color 180ms ease, opacity 180ms ease;
+  opacity: 0.6;
+}
+
+.is-modal-close:hover {
+  color: var(--anchor);
+  opacity: 1;
+}
+
+.is-modal-kicker {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin: 0 0 1rem;
+  font-weight: 400;
+}
+
+.is-modal-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 5vw, 2rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--anchor);
+  margin: 0 0 1.25rem;
+}
+
+.is-modal-body {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--midtone);
+  margin: 0 0 2rem;
+}
+
+.is-modal-cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .is-modal-card {
+    padding: 2.25rem 1.5rem 1.75rem;
+  }
+}

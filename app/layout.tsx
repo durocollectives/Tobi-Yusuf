@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Jost, Playfair_Display } from "next/font/google";
 import { getSiteUrl, getSocialSameAs } from "@/lib/data/site";
 import { SITE_IMAGES } from "@/lib/data/site-images";
 import { LoveResetSlideIn } from "@/components/landing/LoveResetSlideIn";
+import { IntentionalSpaceModal } from "@/components/landing/IntentionalSpaceModal";
 import { ScrollToTop } from "@/components/landing/ScrollToTop";
 import "./globals.css";
 
@@ -164,6 +165,7 @@ export default function RootLayout({
         />
         <ScrollToTop />
         {children}
+        <IntentionalSpaceModal />
         <LoveResetSlideIn />
       </body>
     </html>
