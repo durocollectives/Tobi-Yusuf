@@ -2820,14 +2820,26 @@ img {
   padding: var(--section-pad);
 }
 
-.audio-placeholder {
-  max-width: 720px;
+.product-blocks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  max-width: 960px;
   margin: 0 auto;
-  border: none;
+}
+
+.product-block {
   border-top: 1px solid rgba(61, 31, 43, 0.1);
   border-bottom: 1px solid rgba(61, 31, 43, 0.1);
-  padding: 4rem 3rem;
+  padding: 3rem 2rem;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .product-blocks {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
 }
 
 .audio-phase {
@@ -4809,7 +4821,7 @@ img {
     padding: 1.75rem 1.25rem;
   }
 
-  .audio-placeholder {
+  .product-block {
     padding: 1.75rem 1.25rem;
   }
 

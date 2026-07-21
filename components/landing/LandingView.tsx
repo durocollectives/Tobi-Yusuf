@@ -544,18 +544,42 @@ export function LandingView() {
 
         <LoveResetSection />
 
-        <section id="audio" className="audio-section">
+        <section id="products" className="audio-section">
           <div className="section--narrow">
-            <div className="audio-placeholder animate-in">
-              <p className="section-label">Coming May 2026</p>
-              <div className="terracotta-rule terracotta-rule--center reveal-line" />
-              <h2 className="audio-title">Inside The Mind Series</h2>
-              <p className="body-text" style={{ maxWidth: "480px", margin: "1.5rem auto 2rem" }}>
-                A new audio series for couples and individuals who want thoughtful, grounded perspective, without the noise. Details, pricing, and purchase links will land here when the series launches.
-              </p>
-              <a href="https://tally.so/r/44N4Y5" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">
-                Notify Me When Available
-              </a>
+            <div className="product-blocks">
+              <div className="product-block animate-in">
+                <p className="section-label">New · Available Now</p>
+                <div className="terracotta-rule terracotta-rule--center reveal-line" />
+                <h2 className="audio-title">The Understanding Series</h2>
+                <p className="body-text" style={{ maxWidth: "420px", margin: "1.5rem auto 2rem" }}>
+                  Three reflection guides for couples: Before The Argument, How We Repair, and How We Grow. For the couples who love each other but keep having the same argument. Each guide includes a companion audio in my voice.
+                </p>
+                <a
+                  href="https://tobi-yusuf.mykajabi.com/the-understanding-series-sales-page"
+                  className="btn btn-secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Explore The Series
+                </a>
+              </div>
+
+              <div className="product-block animate-in">
+                <p className="section-label">New · Available Now</p>
+                <div className="terracotta-rule terracotta-rule--center reveal-line" />
+                <h2 className="audio-title">Closer</h2>
+                <p className="body-text" style={{ maxWidth: "420px", margin: "1.5rem auto 2rem" }}>
+                  A reflection guide on intimacy in marriage for the couples who feel the distance but do not know how to say it out loud. Faith-rooted, shame-free, and honest. Includes a companion audio.
+                </p>
+                <a
+                  href="https://tobi-yusuf.mykajabi.com/closer-5b6ac10f-2334-4948-b381-e5c77331368b"
+                  className="btn btn-secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Explore Closer
+                </a>
+              </div>
             </div>
           </div>
         </section>
